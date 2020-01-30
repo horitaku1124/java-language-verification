@@ -16,17 +16,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SimpleDateFormatTests {
     @Nested
     class YmdTest {
+        SimpleDateFormat formatterLenient = new SimpleDateFormat("yyyy/MM/dd");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         Calendar cal;
         @BeforeEach
         public void beforeEach() {
+            formatterLenient.setLenient(true);
             formatter.setLenient(false);
             cal = Calendar.getInstance();
         }
 
         @Test
         public void notmalPattern() throws ParseException {
-            Date date = formatter.parse("2020/12/31");
+            Date date = formatterLenient.parse("2020/12/31");
             cal.setTime(date);
 
             assertEquals(2020, cal.get(Calendar.YEAR));
@@ -35,14 +37,14 @@ public class SimpleDateFormatTests {
         }
         @Test
         public void minMax() throws ParseException {
-            Date date = formatter.parse("0001/01/01");
+            Date date = formatterLenient.parse("0001/01/01");
             cal.setTime(date);
 
             assertEquals(1, cal.get(Calendar.YEAR));
             assertEquals(1 - 1, cal.get(Calendar.MONTH));
             assertEquals(1, cal.get(Calendar.DAY_OF_MONTH));
 
-            date = formatter.parse("9999/12/31");
+            date = formatterLenient.parse("9999/12/31");
             cal.setTime(date);
 
             assertEquals(9999, cal.get(Calendar.YEAR));
@@ -51,8 +53,18 @@ public class SimpleDateFormatTests {
         }
 
         @ParameterizedTest
-        @ValueSource(strings = { "2020/12/3 ",  "2020/12/3a",  "2020/12/3\t"})
+        @ValueSource(strings = { "2020/12/3 ",  "2020/12/3a",  "2020/12/3\t",  "2020/11/33"})
         void palindromes(String candidate) throws ParseException {
+            Date date = formatterLenient.parse(candidate);
+            cal.setTime(date);
+            assertEquals(2020, cal.get(Calendar.YEAR));
+            assertEquals(12 - 1, cal.get(Calendar.MONTH));
+            assertEquals(3, cal.get(Calendar.DAY_OF_MONTH));
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = { "2020/12/3 ",  "2020/12/3a",  "2020/12/3\t"})
+        void palindromes2(String candidate) throws ParseException {
             Date date = formatter.parse(candidate);
             cal.setTime(date);
             assertEquals(2020, cal.get(Calendar.YEAR));
