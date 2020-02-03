@@ -7,12 +7,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
-import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 
-import static java.time.format.ResolverStyle.STRICT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DateTimeFormatterTest {
