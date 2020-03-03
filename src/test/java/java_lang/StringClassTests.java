@@ -41,4 +41,28 @@ public class StringClassTests {
             assertEquals("  A", str);
         }
     }
+
+    @Nested
+    class CompareTo {
+        @Test
+        public void test1() {
+            var a = "abc";
+            var b = "abd";
+            assertEquals(-1, a.compareTo(b));
+            assertEquals(1, b.compareTo(a));
+            assertEquals(0, a.compareTo(a));
+        }
+        @Test
+        public void test2() {
+            var a = "abc";
+            var b = "ab";
+            assertEquals(1, a.compareTo(b));
+        }
+        @Test
+        public void test3() {
+            var a = "abc";
+            var b = "abc";
+            assertEquals(0, a.compareTo(b));
+        }
+    }
 }
