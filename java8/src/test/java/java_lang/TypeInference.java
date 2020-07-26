@@ -21,27 +21,4 @@ public class TypeInference {
         assertEquals("aa", list.get(0));
         assertEquals("bb", list.get(1));
     }
-
-    @Test
-    public void listOfInitialize() {
-        List<String> set = List.of("A", "B", "C");
-        assertEquals(3, set.size());
-    }
-    @Test
-    public void setOfInitialize() {
-        Set<String> set = Set.of("A", "B", "C");
-        assertEquals(3, set.size());
-    }
-    @Test
-    public void mapOfInitialize() {
-        Map<String, String> set = Map.of(
-                "a", "AA",
-                "b", "BB",
-                "c", "CC"
-        );
-        assertEquals(3, set.size());
-        assertEquals("AA", set.get("a"));
-        assertEquals("BB", set.get("b"));
-        assertEquals("CC", set.get("c"));
-    }
 }
