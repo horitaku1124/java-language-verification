@@ -39,4 +39,5 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
-      - run: gradle test
+      - run: cd java8;gradle test
+      - run: cd java11;gradle test
