@@ -40,7 +40,10 @@ public class DateTimeFormatterTest {
         }
         @ParameterizedTest
         @ValueSource(strings = {
-                "2020/12/1"
+                "2020/12/1",
+                "2020/12/1 ",
+                "2020/12/1a",
+                "2020/12/\t1"
                 //, "2020/02/30", "2019/02/29"
         })
         void errorDateSets(String candidate) {
@@ -66,7 +69,10 @@ public class DateTimeFormatterTest {
 
         @ParameterizedTest
         @ValueSource(strings = {
-                "2020/12/1", "2020/02/30", "2019/02/29"
+                "2020/12/1",
+                "2020/12/1 ",
+                "2020/12/1a",
+                "2020/12/\t1", "2020/02/30", "2019/02/29"
         })
         void errorDateSets(String candidate) {
             assertThrows(DateTimeParseException.class, () -> {
