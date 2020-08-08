@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
@@ -20,7 +21,7 @@ public class DateTimeFormatterTest {
 
     @Nested
     class YmdDefaultParseTest {
-        private DateTimeFormatter formatter = DateTimeFormatter
+        private final DateTimeFormatter formatter = DateTimeFormatter
                 .ofPattern("yyyy/MM/dd");
         @Test
         public void parsableDate() {
@@ -56,7 +57,7 @@ public class DateTimeFormatterTest {
     @Nested
     class YmdStrictParseTest {
 
-        private DateTimeFormatter formatter = DateTimeFormatter
+        private final DateTimeFormatter formatter = DateTimeFormatter
                 .ofPattern("uuuu/MM/dd")
                 .withResolverStyle(ResolverStyle.STRICT);
         @Test
@@ -76,7 +77,66 @@ public class DateTimeFormatterTest {
         })
         void errorDateSets(String candidate) {
             assertThrows(DateTimeParseException.class, () -> {
-                LocalDate date = LocalDate.parse(candidate, formatter);
+                LocalDate.parse(candidate, formatter);
+            });
+        }
+    }
+
+    @Nested
+    class YmdHmsParseTest {
+        private final DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("yyyy/MM/dd HH:mm:ss");
+        @Test
+        public void parsableDateTime() {
+            LocalDateTime date = LocalDateTime.parse("2020/12/31 23:45:31", formatter);
+            assertEquals(2020, date.getYear());
+            assertEquals(12, date.getMonthValue());
+            assertEquals(31, date.getDayOfMonth());
+            assertEquals(23, date.getHour());
+            assertEquals(45, date.getMinute());
+            assertEquals(31, date.getSecond());
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {
+                "2020/12/1 23:45:31",
+                "2020/12/31  23:45:31",
+                "2020/12/31 23:45:3a",
+                "2020/12/31\t23:45:31",
+                "2020/12/31 23:45:31a",
+        })
+        void errorDateSets(String candidate) {
+            assertThrows(DateTimeParseException.class, () -> {
+                LocalDateTime.parse(candidate, formatter);
+            });
+        }
+    }
+    @Nested
+    class YmdHmsStrictParseTest {
+        private final DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("uuuu/MM/dd HH:mm:ss")
+                .withResolverStyle(ResolverStyle.STRICT);
+        @Test
+        public void parsableDateTime() {
+            LocalDateTime date = LocalDateTime.parse("2020/12/31 23:45:31", formatter);
+            assertEquals(2020, date.getYear());
+            assertEquals(12, date.getMonthValue());
+            assertEquals(31, date.getDayOfMonth());
+            assertEquals(23, date.getHour());
+            assertEquals(45, date.getMinute());
+            assertEquals(31, date.getSecond());
+        }
+        @ParameterizedTest
+        @ValueSource(strings = {
+                "2020/12/1 23:45:31",
+                "2020/12/31  23:45:31",
+                "2020/12/31 23:45:3a",
+                "2020/12/31\t23:45:31",
+                "2020/12/31 23:45:31a",
+        })
+        void errorDateSets(String candidate) {
+            assertThrows(DateTimeParseException.class, () -> {
+                LocalDateTime.parse(candidate, formatter);
             });
         }
     }
